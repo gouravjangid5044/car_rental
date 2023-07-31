@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+  
+      
+</head>
+<body>
+  
+    <div id="card">
+        <p>Total People: <span id="totalPeople">Sedan</span>
+            <button id="editTotalPeople">Edit</button>
+          </p>
+          <p>Name: <span id="name"> Bolero </span>
+            <button id="editName">Edit</button>
+          </p>
+        </div>   
+      <script>
+        document.getElementById('editTotalPeople').addEventListener('click', function() {
+            makeEditable('totalPeople');
+          });
+          
+          document.getElementById('editName').addEventListener('click', function() {
+            makeEditable('name');
+          });
+          
+          function makeEditable(field) {
+            let element = document.getElementById(field);
+            let input = document.createElement('input');
+            input.value = element.innerHTML;
+            input.addEventListener('keypress', function(event) {
+              if (event.key === 'Enter') {
+                updateField(field, input.value);
+                element.innerHTML = input.value;
+              }
+            });
+            element.innerHTML = '';
+            element.appendChild(input);
+            input.focus();
+          }
+          
+          function updateField(field, value) {
+            // send an AJAX request to update the field in the database
+            // ...
+
+            let xhr = new XMLHttpRequest();
+    xhr.open('POST', 'update.php', true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+        console.log('Success:', xhr.responseText);
+      }
+    };
+    xhr.send(`field=${field}&value=${value}`);
+          }
+          
+      </script>
+  
+</body>
+</html>
